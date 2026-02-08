@@ -134,67 +134,7 @@
         <span class="googleMark" aria-hidden="true"></span>
         <span>Googleでログイン</span>
       </button>
-
-      <div id="errorBox" class="error" role="alert"></div>
-
-      <p class="note">※ログイン後、機能に応じて画面が切り替わります。</p>
-
-      <div class="row">
-        <span class="small">user_id は firebase_uid を利用</span>
-        <a class="small" href="./">トップへ</a>
-      </div>
     </div>
   </div>
-
-  <!-- 実装は後段（教材の後の章）で差し込み前提：Firebase Authentication -->
-  <!--
-    例（構成のイメージ）:
-    - /js/env.js          : Firebase設定
-    - /js/firebase_auth.js: signInWithPopup / signOut / getIdToken など
-    - /js/login.js        : この画面のイベント処理
-  -->
-
-  <script>
-    // 教材用：ここは「動きの骨組み」だけ置く（Firebase 実装は後で差し込み）
-    const btn = document.getElementById("btnLogin");
-    const errorBox = document.getElementById("errorBox");
-
-    function showError(message) {
-      errorBox.textContent = message;
-      errorBox.style.display = "block";
-    }
-
-    function getReturnTo() {
-      const p = new URLSearchParams(location.search);
-      const rt = p.get("return_to");
-      // セキュリティ上、外部URLは拒否（同一オリジンの相対パスだけ許可）
-      if (!rt) return null;
-      if (rt.startsWith("http://") || rt.startsWith("https://")) return null;
-      if (!rt.startsWith("./") && !rt.startsWith("/")) return null;
-      return rt;
-    }
-
-    async function loginWithGoogle() {
-      // TODO: Firebase Authentication の Googleログインをここに差し込む
-      // 例: const { user } = await signInWithGooglePopup();
-      // user.uid が firebase_uid（= user_id）になる想定
-      //
-      // ここでは教材用に「遷移だけ」仮置き。
-      const returnTo = getReturnTo();
-      const next = returnTo || "./qa_generate.html";
-      location.assign(next);
-    }
-
-    btn.addEventListener("click", async () => {
-      errorBox.style.display = "none";
-      btn.disabled = true;
-      try {
-        await loginWithGoogle();
-      } catch (e) {
-        showError("ログインに失敗しました。もう一度お試しください。");
-        btn.disabled = false;
-      }
-    });
-  </script>
 </body>
 </html>
