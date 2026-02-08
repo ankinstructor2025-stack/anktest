@@ -8,7 +8,7 @@ import { getAuth, signInWithPopup, GoogleAuthProvider } from "https://www.gstati
 //  authDomain: "ここ",
 //  projectId: "ここ",
 //  appId: "ここ"
-};
+//};
 
 const firebaseConfig = {
   apiKey: "AIzaSyAv2McrXvVxr0cbm8IBE6epHw6OX-z0rpA",
