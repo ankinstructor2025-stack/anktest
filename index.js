@@ -26,6 +26,12 @@ const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
 
 // ログインボタン押下
-document.getElementById("loginButton").addEventListener("click", () => {
-  signInWithPopup(auth, provider);
+document.getElementById("loginButton").addEventListener("click", async (e) => {
+  e.preventDefault(); // これでsubmit/遷移を潰す
+
+  try {
+    await signInWithPopup(auth, provider);
+  } catch (err) {
+    alert(err.code || String(err)); // 理由だけ出す
+  }
 });
