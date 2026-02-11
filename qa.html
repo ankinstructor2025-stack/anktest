@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>QA作成</title>
+
+  <style>
+    /* ===== ログイン画面寄せ（落ち着いたトーン） ===== */
+    :root{
+      --bg: #0f172a;          /* 深い紺 */
+      --panel: #111827;       /* パネル濃紺 */
+      --panel2: #0b1220;
+      --text: #e5e7eb;        /* 明るいグレー */
+      --muted: #9ca3af;       /* 文字薄め */
+      --line: rgba(255,255,255,.12);
+      --accent: #38bdf8;      /* 水色 */
+      --accent2: #22c55e;     /* 緑 */
+      --btn: #1f2937;
+      --btnHover: #273244;
+      --danger: #ef4444;
+    }
+
+    *{ box-sizing: border-box; }
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+      background: radial-gradient(1200px 600px at 20% -10%, rgba(56,189,248,.18), transparent 55%),
+                  radial-gradient(1200px 600px at 100% 10%, rgba(34,197,94,.12), transparent 45%),
+                  var(--bg);
+      color: var(--text);
+    }
+
+    .wrap{
+      max-width: 980px;
+      margin: 24px auto;
+      padding: 0 16px;
+    }
+
+    /* ===== ヘッダー ===== */
+    .topbar{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+      border-radius: 14px;
+    }
+
+    .title{
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: .02em;
+    }
+
+    .btn{
+      border: 1px solid var(--line);
+      background: var(--btn);
+      color: var(--text);
+      border-radius: 10px;
+      padding: 9px 12px;
+      cursor: pointer;
+      transition: .15s;
+      font-weight: 600;
+    }
+    .btn:hover{ background: var(--btnHover); }
+    .btn.primary{
+      border-color: rgba(56,189,248,.35);
+      background: rgba(56,189,248,.16);
+    }
+    .btn.primary:hover{ background: rgba(56,189,248,.22); }
+    .btn.danger{
+      border-color: rgba(239,68,68,.35);
+      background: rgba(239,68,68,.14);
+    }
+    .btn:disabled{
+      opacity:.5;
+      cursor:not-allowed;
+    }
+
+    /* ===== メイン ===== */
+    .panel{
+      margin-top: 14px;
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.015));
+      border-radius: 14px;
+      padding: 14px;
+    }
+
+    /* 添付の「対話データ + QA作成」行 */
+    .uploadRow{
+      display:flex;
+      align-items:center;
+      gap: 10px;
+      padding: 10px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: rgba(255,255,255,.02);
+    }
+    .labelBox{
+      padding: 6px 10px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: rgba(255,255,255,.02);
+      font-weight: 700;
+    }
+    .file{
+      flex:1;
+      border: 1px solid var(--line);
+      background: rgba(0,0,0,.15);
+      border-radius: 10px;
+      padding: 8px;
+      color: var(--muted);
+    }
+
+    /* 履歴（添付の2カラム構成） */
+    .history{
+      margin-top: 14px;
+    }
+    .historyLabel{
+      display:inline-block;
+      margin-bottom: 8px;
+      padding: 6px 10px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: rgba(255,255,255,.02);
+      font-weight: 700;
+    }
+
+    .historyGrid{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .box{
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.02);
+      border-radius: 12px;
+      padding: 10px;
+      min-height: 220px;
+    }
+
+    .boxTitle{
+      font-weight: 800;
+      margin: 0 0 10px;
+      color: var(--text);
+    }
+
+    .listRow{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 10px;
+      padding: 8px 8px;
+      border-bottom: 1px solid rgba(255,255,255,.08);
+    }
+    .listRow:last-child{ border-bottom: none; }
+
+    .itemName{
+      color: var(--text);
+      font-weight: 600;
+      overflow:hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      max-width: 70%;
+    }
+
+    .smallBtn{
+      padding: 7px 10px;
+      border-radius: 10px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.02);
+      color: var(--text);
+      cursor:pointer;
+      font-weight:700;
+    }
+    .smallBtn:hover{ background: rgba(255,255,255,.05); }
+
+    .meta{
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.4;
+    }
+
+    .status{
+      margin-top: 12px;
+      padding: 10px;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      background: rgba(0,0,0,.18);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 12px;
+      white-space: pre-wrap;
+      color: var(--text);
+      min-height: 44px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <div class="topbar">
+      <div class="title">QA作成</div>
+      <button id="logoutBtn" class="btn">ログアウト</button>
+    </div>
+
+    <div class="panel">
+      <!-- 添付：対話データ + 入力 + QA作成 -->
+      <div class="uploadRow">
+        <div class="labelBox">対話データ</div>
+        <input id="fileInput" class="file" type="file" accept=".txt,.csv,.json,.md,.log" />
+        <button id="createBtn" class="btn primary" disabled>QA作成</button>
+      </div>
+
+      <div class="meta">
+        user_id: <span id="userIdText">-</span><br/>
+        ※ いまは「ファイル選択→ボタン押下」の動作確認まで。履歴はダミー表示。
+      </div>
+
+      <div id="status" class="status"></div>
+
+      <!-- 添付：履歴（左：対話ファイル / 右：QAファイル） -->
+      <div class="history">
+        <div class="historyLabel">履歴</div>
+
+        <div class="historyGrid">
+          <div class="box">
+            <div class="boxTitle">対話ファイル</div>
+            <div id="dialogList"></div>
+          </div>
+
+          <div class="box">
+            <div class="boxTitle">QAファイル</div>
+            <div id="qaList"></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script type="module" src="./qa.js"></script>
+</body>
+</html>

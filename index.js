@@ -39,9 +39,6 @@ document.getElementById("loginButton").addEventListener("click", async (e) => {
     // user_id取得
     const user_id = result.user.uid;
 
-    // ★追加：alert表示（教材用確認）
-    alert("user_id: " + user_id);
-
     // APIに通知
     await fetch(`${API_BASE_URL}/v1/session`, {
       method: "POST",
@@ -51,7 +48,10 @@ document.getElementById("loginButton").addEventListener("click", async (e) => {
       body: JSON.stringify({ user_id })
     });
 
-  } catch (err) {
+    // ★ここで遷移
+    window.location.href = "./qa.html";
+
+    } catch (err) {
     alert(err.code || String(err));
   }
 });
