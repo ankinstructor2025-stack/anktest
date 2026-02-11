@@ -36,6 +36,8 @@ document.getElementById("loginButton").addEventListener("click", async (e) => {
     // ログイン
     const result = await signInWithPopup(auth, provider);
 
+    localStorage.setItem("user_id", result.user.uid);
+
     // user_id取得
     const user_id = result.user.uid;
 
