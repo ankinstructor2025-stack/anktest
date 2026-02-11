@@ -1,8 +1,16 @@
-const API_BASE = "https://anktest-api-xxxxx.run.app"; //あとでenv化
+const API_BASE_URL = "https://anktest-api-986862757498.asia-northeast1.run.app";
 
 // user_id表示
 const user_id = localStorage.getItem("user_id");
 document.getElementById("uidLabel").textContent = user_id || "-";
+
+const fileInput = document.getElementById("fileInput");
+const createBtn = document.getElementById("createBtn");
+const statusEl = document.getElementById("status");
+
+function setStatus(msg) {
+  statusEl.textContent = msg;
+}
 
 // -------------------
 // 履歴取得
@@ -37,26 +45,34 @@ async function loadHistory(){
 
 loadHistory();
 
-// -------------------
-// アップロード
-// -------------------
-document.getElementById("uploadBtn").onclick = async () => {
+createBtn.addEventListener("click", async () => {
+  const file = fileInput.files?.[0];
+  if (!user_id) return alert("user_id がありません（ログインからやり直し）");
+  if (!file) return alert("ファイルを選択してください");
 
-  const file = document.getElementById("fileInput").files[0];
-  if(!file) return alert("ファイル選択");
+  createBtn.disabled = true;
+  setStatus("アップロード中...");
 
-  const fd = new FormData();
-  fd.append("file", file);
-  fd.append("user_id", user_id);
+  try {
+    const fd = new FormData();
+    fd.append("user_id", user_id);
+    fd.append("file", file, file.name);
 
-  await fetch(`${API_BASE}/v1/upload`, {
-    method:"POST",
-    body:fd
-  });
+    const res = await fetch(`${API_BASE_URL}/v1/qa_build`, {
+      method: "POST",
+      body: fd
+    });
 
-  alert("登録完了");
-  loadHistory();
-};
+    const text = await res.text();
+    if (!res.ok) throw new Error(`qa_build error: ${res.status}\n${text}`);
+
+    setStatus(`OK\n${text}`);
+  } catch (e) {
+    setStatus(String(e));
+  } finally {
+    createBtn.disabled = false;
+  }
+});
 
 // -------------------
 function logout(){

@@ -61,6 +61,16 @@ th{
   color:#8b949e;
   margin-top:10px;
 }
+
+/* ★追加：ステータス表示（最小） */
+#status{
+  margin-top:12px;
+  padding:10px;
+  border:1px solid #2f3b5b;
+  border-radius:8px;
+  min-height:42px;
+  white-space:pre-wrap;
+}
 </style>
 </head>
 
@@ -73,6 +83,7 @@ th{
   <div style="display:flex; gap:10px; align-items:center;">
     <label>対話データ</label>
     <input type="file" id="fileInput">
+    <!-- ★変更：JSが createBtn を探すのでIDを合わせる -->
     <button id="createBtn">QA作成</button>
     <button onclick="logout()">ログアウト</button>
   </div>
@@ -80,6 +91,9 @@ th{
   <div class="small">
     user_id: <span id="uidLabel">-</span>
   </div>
+
+  <!-- ★追加：JSの setStatus() の出力先 -->
+  <div id="status"></div>
 </div>
 
 <div class="box">
@@ -100,6 +114,11 @@ th{
 </div>
 
 </div>
+
+<!-- ★追加：qa.js が参照している API_BASE を定義（JSは触らない） -->
+<script>
+  const API_BASE = "https://anktest-api-986862757498.asia-northeast1.run.app";
+</script>
 
 <script src="qa.js"></script>
 </body>
