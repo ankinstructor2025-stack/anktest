@@ -63,10 +63,25 @@ createBtn.addEventListener("click", async () => {
       body: fd
     });
 
-    const text = await res.text();
-    if (!res.ok) throw new Error(`qa_build error: ${res.status}\n${text}`);
+    const data = await res.json();
 
-    setStatus(`OK\n${text}`);
+    if (!res.ok) {
+      setStatus(JSON.stringify(data, null, 2));
+      return;
+    }
+
+    // ▼ここが追加：QA表示
+    if (data.qa) {
+      setStatus(
+        "QA生成完了\n\n" +
+        JSON.stringify(data.qa, null, 2)
+      );
+    } else {
+      setStatus(
+        JSON.stringify(data, null, 2)
+      );
+    }
+
   } catch (e) {
     setStatus(String(e));
   } finally {
