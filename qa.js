@@ -12,8 +12,6 @@ function setStatus(msg) {
   statusEl.textContent = msg;
 }
 
-await loadHistory();
-
 // -------------------
 // 履歴取得
 // -------------------
@@ -45,6 +43,8 @@ async function loadHistory(){
     table.appendChild(tr);
   });
 }
+
+loadHistory();
 
 createBtn.addEventListener("click", async () => {
   const file = fileInput.files?.[0];
