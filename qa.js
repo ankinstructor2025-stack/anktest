@@ -12,13 +12,15 @@ function setStatus(msg) {
   statusEl.textContent = msg;
 }
 
+await loadHistory();
+
 // -------------------
 // 履歴取得
 // -------------------
 async function loadHistory(){
   if(!user_id) return;
 
-  const res = await fetch(`${API_BASE}/v1/history?user_id=${user_id}`);
+  const res = await fetch(`${API_BASE_URL}/v1/files?user_id=${encodeURIComponent(user_id)}`);
   if(!res.ok) return;
 
   const data = await res.json();
@@ -30,20 +32,19 @@ async function loadHistory(){
     const tr = document.createElement("tr");
 
     const td1 = document.createElement("td");
-    td1.innerHTML = `<a href="${r.upload_file}" target="_blank">DL</a>`;
+    // API経由DLリンク
+    const upUrl = r.upload_url ? `${API_BASE_URL}${r.upload_url}` : null;
+    td1.innerHTML = upUrl ? `<a href="${upUrl}" target="_blank">DL</a>` : "-";
 
     const td2 = document.createElement("td");
-    td2.innerHTML = r.qa_file
-      ? `<a href="${r.qa_file}" target="_blank">DL</a>`
-      : "-";
+    const qaUrl = r.qa_url ? `${API_BASE_URL}${r.qa_url}` : null;
+    td2.innerHTML = qaUrl ? `<a href="${qaUrl}" target="_blank">DL</a>` : "-";
 
     tr.appendChild(td1);
     tr.appendChild(td2);
     table.appendChild(tr);
   });
 }
-
-loadHistory();
 
 createBtn.addEventListener("click", async () => {
   const file = fileInput.files?.[0];
