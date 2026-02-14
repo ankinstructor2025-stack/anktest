@@ -30,13 +30,14 @@ async function loadHistory(){
     const tr = document.createElement("tr");
 
     const td1 = document.createElement("td");
-    // API経由DLリンク
+    const upName = r.upload_file ? r.upload_file.split("/").pop() : "-";
     const upUrl = r.upload_url ? `${API_BASE_URL}${r.upload_url}` : null;
-    td1.innerHTML = upUrl ? `<a href="${upUrl}" target="_blank">DL</a>` : "-";
+    td1.innerHTML = upUrl ? `<a href="${upUrl}" target="_blank">${upName}</a>` : "-";
 
     const td2 = document.createElement("td");
+    const qaName = r.qa_file ? r.qa_file.split("/").pop() : "-";
     const qaUrl = r.qa_url ? `${API_BASE_URL}${r.qa_url}` : null;
-    td2.innerHTML = qaUrl ? `<a href="${qaUrl}" target="_blank">DL</a>` : "-";
+    td2.innerHTML = qaUrl ? `<a href="${qaUrl}" target="_blank">${qaName}</a>` : "-";
 
     tr.appendChild(td1);
     tr.appendChild(td2);
